@@ -173,7 +173,7 @@ class Home extends React.Component {
               <tr>
                 <th>&nbsp;&nbsp;&nbsp;</th>
                 <th>Name</th>
-                <th>Medal</th>
+                <th>Metal</th>
                 <th>EC</th>
                 <th>Cost</th>
                 <th>Pre.</th>
@@ -196,6 +196,7 @@ class Home extends React.Component {
 
           <div id="search-container">
             <button
+              id="search-button"
               type="button"
               onClick={() => this.getPharmacyDataForZipcode(zipcode)}
             >
@@ -231,6 +232,7 @@ class Home extends React.Component {
                   <th>Recommended</th>
                   <th># of Pharmacists</th>
                   <th>OTC</th>
+                  <th>Dist (mi)</th>
                 </tr>
               </thead>
               <tbody>{this.renderPharmacyTable(pharmacyData)}</tbody>

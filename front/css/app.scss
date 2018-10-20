@@ -13,7 +13,7 @@ html {
 #app-container {
   text-align: center;
   margin: 50px auto;
-  width: 900px;
+  width: 1000px;
 }
 
 #logo-container > img {
@@ -43,7 +43,6 @@ table {
   border-collapse: collapse;
   font-family: 'Josefin Slab', serif;
   color: white;
-  width: 899px;
   margin: 0 auto;
   border: 2px solid #7ece2c;
   font-weight: bold;
@@ -70,23 +69,47 @@ table tbody {
   background-color: #f1f2fa;
 }
 
+#pharmacy-container {
+  width: 975px;
+}
+
 #pharmacy-map {
   margin-bottom: 10px;
-  width: 400px;
+  width: 250px;
   float: right;
+}
+
+#pharmacy-body-container {
+  display: block;
+  width: 950px;
+  //margin: 0 auto;
 }
 
 #pharmacy-table-container {
   float: left;
+  width: 300px;
 }
 
 #pharmacy-table-container table {
-  width: 400px;
+  width: 300px;
+}
+
+#pharmacy-header {
+  margin-bottom: 20px;
+  margin-right: 100px;
 }
 
 #search-container > * {
   float: left;
   margin-bottom: 10px;
+}
+
+#search-container {
+  height: 20px;
+}
+
+#insurance-container table {
+  width: 900px;
 }
 
 #search-button {
@@ -131,7 +154,3 @@ label {
   float: right;
   margin-right: 50px;
 }
-
-//Insurance
-
-//Pharmacy
