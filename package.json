@@ -1,0 +1,67 @@
+{
+  "name": "rails-react-boilerplate",
+  "version": "1.0.0",
+  "description": "Rails / React / Redux / Webpack 2 boilerplate app.",
+  "main": "index.js",
+  "engines": {
+    "node": "8.12.0"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack": "node node_modules/webpack-cli/bin/cli.js --progress --colors",
+    "webpack-watch": "node node_modules/webpack-cli/bin/cli.js --progress --colors --watch",
+    "webpack-production": "node node_modules/webpack-cli/bin/cli.js --colors --config webpack.config.prod",
+    "eslint": "node node_modules/eslint/bin/eslint.js front/js"
+  },
+  "author": "IP",
+  "license": "MIT",
+  "repository": "giannisp/rails-react-boilerplate",
+  "private": true,
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "axios": "^0.18.0",
+    "loglevel": "^1.6.1",
+    "loglevel-plugin-prefix": "^0.8.4",
+    "prop-types": "^15.6.2",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.1",
+    "redux-actions": "^2.6.1",
+    "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.4",
+    "css-loader": "^1.0.0",
+    "eslint": "^5.7.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-loader": "^2.1.1",
+    "eslint-plugin-babel": "^5.2.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-prettier": "^3.0.0",
+    "eslint-plugin-react": "^7.11.1",
+    "mini-css-extract-plugin": "^0.4.4",
+    "node-sass": "^4.9.3",
+    "prettier": "^1.14.3",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "stylelint": "^9.6.0",
+    "stylelint-bare-webpack-plugin": "^1.0.1",
+    "stylelint-config-standard": "^18.2.0",
+    "uglifyjs-webpack-plugin": "^2.0.1",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-manifest-plugin": "^2.0.4"
+  }
+}
