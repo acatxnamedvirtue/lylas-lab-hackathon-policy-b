@@ -11,7 +11,7 @@ class YelpAdapter
     params = {
       term: 'pharmacy',
       location: zip_code,
-      limit: 10
+      limit: 20
     }
 
     resp = RestClient.get(base_url, {Authorization: headers, params: params})

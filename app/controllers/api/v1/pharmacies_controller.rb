@@ -6,5 +6,9 @@ class Api::V1::PharmaciesController < ApplicationController
     pharmacies = client.get_pharmacies(@zip_code)
     render json: pharmacies
   end
+
+  def map
+    render json: {map_key: ENV['maps_api_key']}
+  end
 end
 
