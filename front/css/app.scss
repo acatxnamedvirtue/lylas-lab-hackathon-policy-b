@@ -1,4 +1,34 @@
-@charset 'UTF-8';
+@charset "UTF-8";
 
 @import 'base/colors';
 @import 'base/typography';
+
+html {
+  background-color: #7982ce;
+}
+
+#app-container {
+  text-align: center;
+  margin: 50px auto;
+  width: 500px;
+}
+
+#home-container {
+  //
+}
+
+.button {
+  color: white;
+  background-color: #acce79;
+  border: 1px solid #7ece2c;
+  text-align: center;
+  vertical-align: middle;
+  margin: 0 auto;
+  width: 100px;
+  height: 25px;
+  padding: 10px 15px;
+}
+
+#insurance-button {
+  float: left;
+}
