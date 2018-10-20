@@ -9,21 +9,19 @@ html {
   background-color: #7982ce;
 }
 
+//Shared
 #app-container {
   text-align: center;
   margin: 50px auto;
-  width: 500px;
+  width: 900px;
 }
 
-#home-container > #header-container > h1 {
-  color: white;
-  font-family: 'Josefin Sans', sans-serif;
-  margin: 20px auto;
-}
-
-#home-container > #button-container {
-  margin: 0 auto;
+#logo-container > img {
   width: 400px;
+}
+
+#home-button {
+  margin-top: 20px;
 }
 
 .button {
@@ -38,10 +36,60 @@ html {
   width: 120px;
   height: 50px;
   padding: 10px 15px;
+  font-weight: bold;
 }
 
 table {
+  border-collapse: collapse;
   font-family: 'Josefin Slab', serif;
+  color: white;
+  width: 700px;
+  margin: 0 auto;
+  border: 2px solid #7ece2c;
+}
+
+table > thead > tr > th {
+  border-bottom: 2px solid #7ece2c;
+}
+
+#search-container > * {
+  float: left;
+  margin-bottom: 10px;
+}
+
+#zipcode
+
+#search-button {
+  background-color: #acce79;
+  color: white;
+  border: 1px solid #7ece2c;
+  text-align: center;
+  border-radius: 5px;
+}
+
+label {
+  color: white;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+//Headers
+#home-container > #header-container > h1,
+#insurance-container > #insurance-header > h1,
+#pharmacy-container > #pharmacy-header > h1 {
+  color: white;
+  font-family: 'Josefin Sans', sans-serif;
+  margin: 20px auto;
+}
+
+#insurance-header {
+  width: 700px;
+  margin: 0 auto;
+}
+
+//Home
+#home-container > #button-container {
+  margin: 0 auto;
+  width: 400px;
 }
 
 #insurance-button {
@@ -53,3 +101,7 @@ table {
   float: right;
   margin-right: 50px;
 }
+
+//Insurance
+
+//Pharmacy

@@ -95,7 +95,7 @@ class Home extends React.Component {
     super(props);
 
     this.state = {
-      activeView: 'HOME',
+      activeView: 'INSURANCE',
       zipcode: '',
       insuranceData: [],
       pharmacyData: [],
@@ -108,23 +108,28 @@ class Home extends React.Component {
 
   getInsuranceDataForZipCode(zipcode) {
     this.setState({ insuranceData: this.SAMPLE_INSURANCE_DATA });
-    return axios.get(`/api/insurance?zipcode=${zipcode}`);
+    // return axios.get(`/api/insurance?zipcode=${zipcode}`);
   }
 
   getPharmacyDataForZipcode(zipcode) {
     this.setState({ pharmacyData: this.SAMPLE_PHARMACY_DATA });
-    return axios.get(`/api/pharmacy?zipcode=${zipcode}`);
+    // return axios.get(`/api/pharmacy?zipcode=${zipcode}`);
   }
 
   getHomeButton() {
-    return (
-      <button
-        type="button"
-        onClick={() => this.setState({ activeView: 'HOME' })}
-      >
-        Home
-      </button>
-    );
+    const { activeView } = this.state;
+    if (activeView !== 'HOME')
+      return (
+        <button
+          id="home-button"
+          className="button"
+          type="button"
+          onClick={() => this.setState({ activeView: 'HOME' })}
+        >
+          Home
+        </button>
+      );
+    return '';
   }
 
   switchActiveView(activeView) {
@@ -165,26 +170,31 @@ class Home extends React.Component {
 
     return (
       <div id="insurance-container">
-        {this.getHomeButton()}
         <div id="insurance-header">
           <h1>Insurance Plans</h1>
-          <button
-            type="button"
-            onClick={() => this.getInsuranceDataForZipCode(zipcode)}
-          >
-            <FontAwesomeIcon icon="search" />
-          </button>
-          <label htmlFor="zip-code">
-            Zip Code
-            <input
-              id="zip-code"
-              onChange={e => {
-                this.setState({ zipcode: e.target.value });
-              }}
-              type="textbox"
-              placeholder="Zip Code"
-            />
-          </label>
+          <div id="search-container">
+            <button
+              id="search-button"
+              type="button"
+              onClick={() => this.getInsuranceDataForZipCode(zipcode)}
+            >
+              <FontAwesomeIcon icon="search" />
+            </button>
+            <label htmlFor="zip-code">
+              &nbsp;Zip Code&nbsp;
+              <input
+                id="zip-code"
+                onChange={e => {
+                  this.setState({ zipcode: e.target.value });
+                }}
+                onKeyPress={e =>
+                  e.key === 'Enter' && this.getInsuranceDataForZipCode(zipcode)
+                }
+                type="textbox"
+                placeholder="Zip Code"
+              />
+            </label>
+          </div>
         </div>
 
         <div id="insurance-table-container">
@@ -199,7 +209,7 @@ class Home extends React.Component {
                 <th>Pre.</th>
               </tr>
             </thead>
-            <tbody>{this.renderInsuranceTable(insuranceData)}</tbody>
+            <tbody>{Home.renderInsuranceTable(insuranceData)}</tbody>
           </table>
         </div>
       </div>
@@ -210,25 +220,27 @@ class Home extends React.Component {
     const { pharmacyData, zipcode } = this.state;
     return (
       <div id="pharmacy-container">
-        {this.getHomeButton()}
         <div id="pharmacy-header">
-          <button
-            type="button"
-            onClick={() => this.getPharmacyDataForZipcode(zipcode)}
-          >
-            <FontAwesomeIcon icon="search" />
-          </button>
-          <label htmlFor="zip-code">
-            Zip Code
-            <input
-              id="zip-code"
-              onChange={e => {
-                this.setState({ zipcode: e.target.value });
-              }}
-              type="textbox"
-              placeholder="Zip Code"
-            />
-          </label>
+          <h1>Pharmacies</h1>
+          <div id="search-container">
+            <button
+              type="button"
+              onClick={() => this.getPharmacyDataForZipcode(zipcode)}
+            >
+              <FontAwesomeIcon icon="search" />
+            </button>
+            <label htmlFor="zip-code">
+              Zip Code
+              <input
+                id="zip-code"
+                onChange={e => {
+                  this.setState({ zipcode: e.target.value });
+                }}
+                type="textbox"
+                placeholder="Zip Code"
+              />
+            </label>
+          </div>
         </div>
         <div id="pharmacy-body-container">
           <div id="pharmacy-map">MAP HERE</div>
@@ -267,7 +279,7 @@ class Home extends React.Component {
     }
   }
 
-  renderInsuranceTable(insuranceData) {
+  static renderInsuranceTable(insuranceData) {
     return insuranceData.map((datum, index) => (
       <tr key={`data-row-${datum.id}`}>
         <td>{index + 1}.</td>
@@ -304,8 +316,9 @@ class Home extends React.Component {
     return (
       <div id="app-container">
         <div id="logo-container">
-          <img src="public/logo.png" alt="Plan A Logo" />
+          <img src="https://i.imgur.com/L8oQrpQ.png" alt="Plan A Logo" />
         </div>
+        {this.getHomeButton()}
         {this.renderActiveView(activeView)}
       </div>
     );
