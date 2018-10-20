@@ -12,7 +12,8 @@ class VericredAdapter
   def get_plans(state)
     drug_ids = ENV['drug_ids'].split(', ').shuffle.first(2)
     coverages = drug_ids.map{|drug_id| get_coverages(drug_id, state)}.flatten.shuffle.first(10)
-    coverages.map{|coverage| get_plan(coverage)}
+    plans = coverages.map{|coverage| get_plan(coverage)}
+    plans.compact
   end
 
   def get_coverages(drug_id, state)
@@ -40,7 +41,7 @@ class VericredAdapter
         pre: plan['premium'] || 'contact for rates'
       }
     else
-      {}
+      nil
     end
   end
 
