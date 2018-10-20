@@ -2,6 +2,8 @@
 
 @import 'base/colors';
 @import 'base/typography';
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
+@import url('https://fonts.googleapis.com/css?family=Josefin+Slab');
 
 html {
   background-color: #7982ce;
@@ -13,23 +15,41 @@ html {
   width: 500px;
 }
 
-#home-container > h1 {
+#home-container > #header-container > h1 {
+  color: white;
+  font-family: 'Josefin Sans', sans-serif;
+  margin: 20px auto;
+}
+
+#home-container > #button-container {
   margin: 0 auto;
+  width: 400px;
 }
 
 .button {
   font-size: 20px;
-  color: white;
+  font-family: 'Josefin Slab', serif;
   background-color: #acce79;
   border: 1px solid #7ece2c;
   text-align: center;
   vertical-align: middle;
+  color: white;
   margin: 0 auto;
   width: 120px;
   height: 50px;
   padding: 10px 15px;
 }
 
+table {
+  font-family: 'Josefin Slab', serif;
+}
+
 #insurance-button {
   float: left;
+  margin-left: 50px;
+}
+
+#pharmacy-button {
+  float: right;
+  margin-right: 50px;
 }

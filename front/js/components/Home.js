@@ -1,5 +1,6 @@
 import React from 'react';
-import { AxiosInstance as axios } from 'axios';
+import { axios } from 'axios';
+import zipcodes from 'zipcodes';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -97,6 +98,7 @@ class Home extends React.Component {
       activeView: 'HOME',
       zipcode: '',
       insuranceData: [],
+      pharmacyData: [],
     };
 
     this.switchActiveView = this.switchActiveView.bind(this);
@@ -106,11 +108,23 @@ class Home extends React.Component {
 
   getInsuranceDataForZipCode(zipcode) {
     this.setState({ insuranceData: this.SAMPLE_INSURANCE_DATA });
-    // return axios.get(`/api/get_insurance_data?zipcode=${zipcode}`);
+    return axios.get(`/api/insurance?zipcode=${zipcode}`);
   }
 
   getPharmacyDataForZipcode(zipcode) {
-    this.setState({ pharmacyData: this.SAMPLE_PHARMACY_DATA })
+    this.setState({ pharmacyData: this.SAMPLE_PHARMACY_DATA });
+    return axios.get(`/api/pharmacy?zipcode=${zipcode}`);
+  }
+
+  getHomeButton() {
+    return (
+      <button
+        type="button"
+        onClick={() => this.setState({ activeView: 'HOME' })}
+      >
+        Home
+      </button>
+    );
   }
 
   switchActiveView(activeView) {
@@ -124,30 +138,34 @@ class Home extends React.Component {
           <h1>What are you looking for?</h1>
         </div>
 
-        <button
-          type="button"
-          id="insurance-button"
-          className="button"
-          onClick={() => this.switchActiveView('INSURANCE')}
-        >
-          Insurance
-        </button>
-        <button
-          type="button"
-          id="pharmacy-button"
-          className="button"
-          onClick={() => this.switchActiveView('PHARMACY')}
-        >
-          Pharmacy
-        </button>
+        <div id="button-container">
+          <button
+            type="button"
+            id="insurance-button"
+            className="button"
+            onClick={() => this.switchActiveView('INSURANCE')}
+          >
+            Insurance
+          </button>
+          <button
+            type="button"
+            id="pharmacy-button"
+            className="button"
+            onClick={() => this.switchActiveView('PHARMACY')}
+          >
+            Pharmacy
+          </button>
+        </div>
       </div>
     );
   }
 
   renderInsuranceView() {
     const { insuranceData, zipcode } = this.state;
+
     return (
       <div id="insurance-container">
+        {this.getHomeButton()}
         <div id="insurance-header">
           <h1>Insurance Plans</h1>
           <button
@@ -189,8 +207,10 @@ class Home extends React.Component {
   }
 
   renderPharmacyView() {
+    const { pharmacyData, zipcode } = this.state;
     return (
       <div id="pharmacy-container">
+        {this.getHomeButton()}
         <div id="pharmacy-header">
           <button
             type="button"
@@ -210,8 +230,29 @@ class Home extends React.Component {
             />
           </label>
         </div>
+        <div id="pharmacy-body-container">
+          <div id="pharmacy-map">MAP HERE</div>
+          <div id="pharmacy-table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>&nbsp;&nbsp;&nbsp;</th>
+                  <th>Name</th>
+                  <th>Address</th>
+                  <th>City</th>
+                  <th>State</th>
+                  <th>Zipcode</th>
+                  <th>Recommended</th>
+                  <th># of Pharmacists</th>
+                  <th>OTC</th>
+                </tr>
+              </thead>
+              <tbody>{this.renderPharmacyTable(pharmacyData)}</tbody>
+            </table>
+          </div>
+        </div>
       </div>
-    )
+    );
   }
 
   renderActiveView(view) {
@@ -239,9 +280,35 @@ class Home extends React.Component {
     ));
   }
 
+  renderPharmacyTable(pharmacyData) {
+    const { zipcode } = this.state;
+
+    return pharmacyData.map((datum, index) => (
+      <tr key={`data-row-${datum.id}`}>
+        <td>{index + 1}.</td>
+        <td>{datum.name}</td>
+        <td>{datum.address}</td>
+        <td>{datum.city}</td>
+        <td>{datum.state}</td>
+        <td>{datum.zipcode}</td>
+        <td>{datum.recommended}</td>
+        <td>{datum.numberOfPharmacists}</td>
+        <td>{datum.otc}</td>
+        <td>{zipcodes.distance(zipcode, datum.zipcode)}</td>
+      </tr>
+    ));
+  }
+
   render() {
     const { activeView } = this.state;
-    return <div id="app-container">{this.renderActiveView(activeView)}</div>;
+    return (
+      <div id="app-container">
+        <div id="logo-container">
+          <img src="public/logo.png" alt="Plan A Logo" />
+        </div>
+        {this.renderActiveView(activeView)}
+      </div>
+    );
   }
 }
 
