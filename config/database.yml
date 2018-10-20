@@ -77,9 +77,9 @@ test:
 #
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
-#
-production:
-  <<: *default
-  database: rails-react-bp-prod
-  username: cezzxrvivvbdui
-  password: <%= ENV['RAILS-REACT-BOILERPLATE_DATABASE_PASSWORD'] %>
+##
+#production:
+#  <<: *default
+#  database: rails-react-bp-prod
+#  username: cezzxrvivvbdui
+#  password: <%= ENV['RAILS-REACT-BOILERPLATE_DATABASE_PASSWORD'] %>
