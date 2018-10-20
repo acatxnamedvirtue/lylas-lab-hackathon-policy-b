@@ -71,7 +71,17 @@ table tbody {
 }
 
 #pharmacy-map {
+  margin-bottom: 10px;
+  width: 400px;
   float: right;
+}
+
+#pharmacy-table-container {
+  float: left;
+}
+
+#pharmacy-table-container table {
+  width: 400px;
 }
 
 #search-container > * {

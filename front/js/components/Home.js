@@ -40,6 +40,8 @@ class Home extends React.Component {
       city: 'NY',
       state: 'NY',
       zipcode: '10003',
+      lat: 1,
+      lng: 1,
       recommended: true,
       numberOfPharmacists: '1',
       otc: true,
@@ -51,6 +53,8 @@ class Home extends React.Component {
       city: 'NY',
       state: 'NY',
       zipcode: '10012',
+      lat: 1,
+      lng: 1,
       recommended: false,
       numberOfPharmacists: '2',
       otc: false,
@@ -62,6 +66,8 @@ class Home extends React.Component {
       city: 'NY',
       state: 'NY',
       zipcode: '10065',
+      lat: 1,
+      lng: 1,
       recommended: true,
       numberOfPharmacists: '5',
       otc: true,
@@ -73,6 +79,8 @@ class Home extends React.Component {
       city: 'NY',
       state: 'NY',
       zipcode: '10023',
+      lat: 1,
+      lng: 1,
       recommended: false,
       numberOfPharmacists: '1',
       otc: false,
@@ -81,9 +89,10 @@ class Home extends React.Component {
 
   constructor(props) {
     super(props);
+    this.getGoogleMapsKey();
 
     this.state = {
-      activeView: 'PHARMACY',
+      activeView: 'HOME',
       zipcode: '',
       insuranceData: [],
       pharmacyData: [],
@@ -103,15 +112,14 @@ class Home extends React.Component {
   }
 
   getPharmacyDataForZipcode(zipcode) {
-    return this.SAMPLE_PHARMACY_DATA;
-    // return axios.get(`/api/v1/pharmacies?zip_code=${zipcode}`).then(res => {
-    //   this.setState({ pharmacyData: res.data });
-    // });
+    return axios.get(`/api/v1/pharmacies?zip_code=${zipcode}`).then(res => {
+      this.setState({ pharmacyData: res.data });
+    });
   }
 
   getGoogleMapsKey() {
     return axios.get('/api/v1/map').then(res => {
-      this.setState({mapsKey: res.data})
+      this.setState({ mapsKey: res.data.map_key });
     });
   }
 
@@ -131,11 +139,14 @@ class Home extends React.Component {
     return '';
   }
 
-  getMapMarkers() {
-    const { pharmacyData } = this.state;
-
+  getMapMarkers(pharmacyData) {
     return pharmacyData.map(pharmacy => {
-      return <Marker position={{ lat: pharmacy.lat, lng: pharmacy.lng }} />;
+      return (
+        <Marker
+          key={pharmacy.id}
+          position={{ lat: pharmacy.lat, lng: pharmacy.lng }}
+        />
+      );
     });
   }
 
@@ -224,21 +235,13 @@ class Home extends React.Component {
   }
 
   renderPharmacyView() {
-    const { pharmacyData, zipcode } = this.state;
+    const { pharmacyData, zipcode, mapsKey } = this.state;
+    const isMarkerShown = true;
     return (
       <div id="pharmacy-container">
         <div id="pharmacy-header">
           <h1>Pharmacies</h1>
-          <div id="pharmacy-map">
-            <Map
-              isMarkerShown
-              googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${this.getGoogleMapsKey()}`}
-              loadingElement={<div style={{ height: `100%` }} />}
-              containerElement={<div style={{ height: `400px` }} />}
-              mapElement={<div style={{ height: `100%` }} />}
-              markers={this.getMapMarkers()}
-            />
-          </div>
+
           <div id="search-container">
             <button
               type="button"
@@ -280,6 +283,16 @@ class Home extends React.Component {
               </thead>
               <tbody>{this.renderPharmacyTable(pharmacyData)}</tbody>
             </table>
+          </div>
+          <div id="pharmacy-map">
+            <Map
+              isMarkerShown={isMarkerShown}
+              googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${mapsKey}`}
+              loadingElement={<div style={{ height: `100%` }} />}
+              containerElement={<div style={{ height: `400px` }} />}
+              mapElement={<div style={{ height: `100%` }} />}
+              // markers={this.getMapMarkers(pharmacyData)}
+            />
           </div>
         </div>
       </div>
