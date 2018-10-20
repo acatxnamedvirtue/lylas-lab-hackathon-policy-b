@@ -7,9 +7,15 @@ class Home extends React.Component {
     this.state = {
       activeView: 'HOME',
     };
+
+    this.switchActiveView = this.switchActiveView.bind(this);
   }
 
   componentDidMount() {}
+
+  switchActiveView(activeView) {
+    this.setState({ activeView });
+  }
 
   renderHomeView() {
     return (
@@ -19,14 +25,14 @@ class Home extends React.Component {
         <div
           id="insurance-button"
           className="button"
-          onClick={() => this.setState({ activeView: 'INSURANCE' })}
+          onClick={() => this.switchActiveView('INSURANCE')}
         >
           Insurance
         </div>
         <div
           id="pharmacy-button"
           className="button"
-          onClick={() => this.setState({ activeView: 'PHARMACY' })}
+          onClick={() => this.switchActiveView('PHARMACY')}
         >
           Pharmacy
         </div>
