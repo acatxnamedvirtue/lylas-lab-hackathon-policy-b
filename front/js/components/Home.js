@@ -1,6 +1,12 @@
 import React from 'react';
 import { AxiosInstance as axios } from 'axios';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faSearch);
+
 class Home extends React.Component {
   SAMPLE_INSURANCE_DATA = [
     {
@@ -37,6 +43,53 @@ class Home extends React.Component {
     },
   ];
 
+  SAMPLE_PHARMACY_DATA = [
+    {
+      id: '1',
+      name: 'Pharmacy 1',
+      address: '123 Main St',
+      city: 'NY',
+      state: 'NY',
+      zipcode: '10003',
+      thumbs: 'up',
+      numberOfPharmacists: '1',
+      otc: true,
+    },
+    {
+      id: '2',
+      name: 'Pharmacy 2',
+      address: '456 Main St',
+      city: 'NY',
+      state: 'NY',
+      zipcode: '10012',
+      thumbs: 'up',
+      numberOfPharmacists: '2',
+      otc: false,
+    },
+    {
+      id: '3',
+      name: 'Pharmacy 3',
+      address: '789 Main St',
+      city: 'NY',
+      state: 'NY',
+      zipcode: '10065',
+      thumbs: 'up',
+      numberOfPharmacists: '5',
+      otc: true,
+    },
+    {
+      id: '4',
+      name: 'Pharmacy 4',
+      address: '111 Main St',
+      city: 'NY',
+      state: 'NY',
+      zipcode: '10023',
+      thumbs: 'up',
+      numberOfPharmacists: '1',
+      otc: false,
+    },
+  ];
+
   constructor(props) {
     super(props);
 
@@ -54,6 +107,10 @@ class Home extends React.Component {
   getInsuranceDataForZipCode(zipcode) {
     this.setState({ insuranceData: this.SAMPLE_INSURANCE_DATA });
     // return axios.get(`/api/get_insurance_data?zipcode=${zipcode}`);
+  }
+
+  getPharmacyDataForZipcode(zipcode) {
+    this.setState({ pharmacyData: this.SAMPLE_PHARMACY_DATA })
   }
 
   switchActiveView(activeView) {
@@ -97,7 +154,7 @@ class Home extends React.Component {
             type="button"
             onClick={() => this.getInsuranceDataForZipCode(zipcode)}
           >
-            <i className="fa fa-search" />
+            <FontAwesomeIcon icon="search" />
           </button>
           <label htmlFor="zip-code">
             Zip Code
@@ -132,7 +189,29 @@ class Home extends React.Component {
   }
 
   renderPharmacyView() {
-    return undefined;
+    return (
+      <div id="pharmacy-container">
+        <div id="pharmacy-header">
+          <button
+            type="button"
+            onClick={() => this.getPharmacyDataForZipcode(zipcode)}
+          >
+            <FontAwesomeIcon icon="search" />
+          </button>
+          <label htmlFor="zip-code">
+            Zip Code
+            <input
+              id="zip-code"
+              onChange={e => {
+                this.setState({ zipcode: e.target.value });
+              }}
+              type="textbox"
+              placeholder="Zip Code"
+            />
+          </label>
+        </div>
+      </div>
+    )
   }
 
   renderActiveView(view) {
