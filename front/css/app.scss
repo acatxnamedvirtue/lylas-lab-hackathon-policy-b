@@ -13,19 +13,20 @@ html {
   width: 500px;
 }
 
-#home-container {
-  //
+#home-container > h1 {
+  margin: 0 auto;
 }
 
 .button {
+  font-size: 20px;
   color: white;
   background-color: #acce79;
   border: 1px solid #7ece2c;
   text-align: center;
   vertical-align: middle;
   margin: 0 auto;
-  width: 100px;
-  height: 25px;
+  width: 120px;
+  height: 50px;
   padding: 10px 15px;
 }
 
