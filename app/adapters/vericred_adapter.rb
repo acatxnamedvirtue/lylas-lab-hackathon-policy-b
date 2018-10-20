@@ -10,7 +10,7 @@ class VericredAdapter
   end
 
   def get_plans(state)
-    drug_ids = ENV['drug_ids'].split(', ').first(10)
+    drug_ids = ENV['drug_ids'].split(', ').shuffle.first(2)
     coverages = drug_ids.map{|drug_id| get_coverages(drug_id, state)}.flatten.shuffle.first(10)
     coverages.map{|coverage| get_plan(coverage)}
   end
@@ -30,14 +30,18 @@ class VericredAdapter
   end
 
   def format_plan(plan, tier)
-    {
-      id: plan['id'],
-      name: "#{plan['carrier_name']}: #{plan['display_name']}",
-      medal: plan['level'],
-      ec: drug_covered(tier),
-      cost: drug_cost(plan, tier),
-      pre: plan['premium'] || 'contact for rates'
-    }
+    if plan
+      {
+        id: plan['id'],
+        name: "#{plan['carrier_name']}: #{plan['display_name']}",
+        medal: plan['level'],
+        ec: drug_covered(tier),
+        cost: drug_cost(plan, tier),
+        pre: plan['premium'] || 'contact for rates'
+      }
+    else
+      {}
+    end
   end
 
   def drug_covered(tier)
