@@ -25,68 +25,13 @@ library.add(faCapsules);
 
 const Map = withScriptjs(
   withGoogleMap(props => (
-    <GoogleMap defaultZoom={8} defaultCenter={{ lat: -34.397, lng: 150.644 }}>
+    <GoogleMap defaultZoom={14} center={props.defaultCenter}>
       {props.isMarkerShown && props.markers}
     </GoogleMap>
   )),
 );
 
 class Home extends React.Component {
-  SAMPLE_PHARMACY_DATA = [
-    {
-      id: '1',
-      name: 'Pharmacy 1',
-      address: '123 Main St',
-      city: 'NY',
-      state: 'NY',
-      zipcode: '10003',
-      lat: 1,
-      lng: 1,
-      recommended: true,
-      numberOfPharmacists: '1',
-      otc: true,
-    },
-    {
-      id: '2',
-      name: 'Pharmacy 2',
-      address: '456 Main St',
-      city: 'NY',
-      state: 'NY',
-      zipcode: '10012',
-      lat: 1,
-      lng: 1,
-      recommended: false,
-      numberOfPharmacists: '2',
-      otc: false,
-    },
-    {
-      id: '3',
-      name: 'Pharmacy 3',
-      address: '789 Main St',
-      city: 'NY',
-      state: 'NY',
-      zipcode: '10065',
-      lat: 1,
-      lng: 1,
-      recommended: true,
-      numberOfPharmacists: '5',
-      otc: true,
-    },
-    {
-      id: '4',
-      name: 'Pharmacy 4',
-      address: '111 Main St',
-      city: 'NY',
-      state: 'NY',
-      zipcode: '10023',
-      lat: 1,
-      lng: 1,
-      recommended: false,
-      numberOfPharmacists: '1',
-      otc: false,
-    },
-  ];
-
   constructor(props) {
     super(props);
     this.getGoogleMapsKey();
@@ -97,6 +42,7 @@ class Home extends React.Component {
       insuranceData: [],
       pharmacyData: [],
       mapsKey: '',
+      defaultCenter: { lat: 1, lng: 1 },
     };
 
     this.switchActiveView = this.switchActiveView.bind(this);
@@ -113,7 +59,13 @@ class Home extends React.Component {
 
   getPharmacyDataForZipcode(zipcode) {
     return axios.get(`/api/v1/pharmacies?zip_code=${zipcode}`).then(res => {
-      this.setState({ pharmacyData: res.data });
+      this.setState({
+        defaultCenter: {
+          lat: res.data[0].latitude,
+          lng: res.data[0].longitude,
+        },
+        pharmacyData: res.data,
+      });
     });
   }
 
@@ -139,12 +91,12 @@ class Home extends React.Component {
     return '';
   }
 
-  getMapMarkers(pharmacyData) {
+  static getMapMarkers(pharmacyData) {
     return pharmacyData.map(pharmacy => {
       return (
         <Marker
           key={pharmacy.id}
-          position={{ lat: pharmacy.lat, lng: pharmacy.lng }}
+          position={{ lat: pharmacy.latitude, lng: pharmacy.longitude }}
         />
       );
     });
@@ -235,7 +187,7 @@ class Home extends React.Component {
   }
 
   renderPharmacyView() {
-    const { pharmacyData, zipcode, mapsKey } = this.state;
+    const { pharmacyData, zipcode, mapsKey, defaultCenter } = this.state;
     const isMarkerShown = true;
     return (
       <div id="pharmacy-container">
@@ -285,14 +237,19 @@ class Home extends React.Component {
             </table>
           </div>
           <div id="pharmacy-map">
-            <Map
-              isMarkerShown={isMarkerShown}
-              googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${mapsKey}`}
-              loadingElement={<div style={{ height: `100%` }} />}
-              containerElement={<div style={{ height: `400px` }} />}
-              mapElement={<div style={{ height: `100%` }} />}
-              // markers={this.getMapMarkers(pharmacyData)}
-            />
+            {pharmacyData.length > 0 && (
+              <Map
+                isMarkerShown={isMarkerShown}
+                googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${mapsKey}`}
+                loadingElement={<div style={{ height: `100%` }} />}
+                containerElement={<div style={{ height: `400px` }} />}
+                mapElement={<div style={{ height: `100%` }} />}
+                markers={
+                  pharmacyData.length > 0 && Home.getMapMarkers(pharmacyData)
+                }
+                defaultCenter={defaultCenter}
+              />
+            )}
           </div>
         </div>
       </div>
