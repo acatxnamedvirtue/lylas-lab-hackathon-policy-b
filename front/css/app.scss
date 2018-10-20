@@ -43,21 +43,21 @@ table {
   border-collapse: collapse;
   font-family: 'Josefin Slab', serif;
   color: white;
-  width: 700px;
+  width: 800px;
   margin: 0 auto;
   border: 2px solid #7ece2c;
+  font-weight: bold;
 }
 
 table > thead > tr > th {
   border-bottom: 2px solid #7ece2c;
+  font-size: 20px;
 }
 
 #search-container > * {
   float: left;
   margin-bottom: 10px;
 }
-
-#zipcode
 
 #search-button {
   background-color: #acce79;

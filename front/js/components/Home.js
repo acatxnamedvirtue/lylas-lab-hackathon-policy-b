@@ -1,49 +1,15 @@
 import React from 'react';
-import { axios } from 'axios';
 import zipcodes from 'zipcodes';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
+const axios = require('axios');
+
 library.add(faSearch);
 
 class Home extends React.Component {
-  SAMPLE_INSURANCE_DATA = [
-    {
-      id: '1',
-      name: 'name1',
-      medal: 'medal1',
-      ec: 'ec1',
-      cost: 'cost1',
-      pre: 'pre1',
-    },
-    {
-      id: '2',
-      name: 'name2',
-      medal: 'medal2',
-      ec: 'ec2',
-      cost: 'cost2',
-      pre: 'pre2',
-    },
-    {
-      id: '3',
-      name: 'name3',
-      medal: 'medal3',
-      ec: 'ec3',
-      cost: 'cost3',
-      pre: 'pre3',
-    },
-    {
-      id: '4',
-      name: 'name4',
-      medal: 'medal4',
-      ec: 'ec4',
-      cost: 'cost4',
-      pre: 'pre4',
-    },
-  ];
-
   SAMPLE_PHARMACY_DATA = [
     {
       id: '1',
@@ -102,13 +68,18 @@ class Home extends React.Component {
     };
 
     this.switchActiveView = this.switchActiveView.bind(this);
+    this.getInsuranceDataForZipCode = this.getInsuranceDataForZipCode.bind(
+      this,
+    );
   }
 
   componentDidMount() {}
 
   getInsuranceDataForZipCode(zipcode) {
-    this.setState({ insuranceData: this.SAMPLE_INSURANCE_DATA });
-    // return axios.get(`/api/insurance?zipcode=${zipcode}`);
+    return axios.get(`/api/v1/plans?zip_code=${zipcode}`).then(res => {
+      debugger;
+      this.setState({ insuranceData: res.data });
+    });
   }
 
   getPharmacyDataForZipcode(zipcode) {
