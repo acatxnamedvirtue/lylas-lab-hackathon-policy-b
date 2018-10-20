@@ -3,11 +3,33 @@ import zipcodes from 'zipcodes';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import {
+  faSearch,
+  faThumbsDown,
+  faThumbsUp,
+  faCapsules,
+} from '@fortawesome/free-solid-svg-icons';
+import {
+  withScriptjs,
+  withGoogleMap,
+  GoogleMap,
+  Marker,
+} from 'react-google-maps';
 
 const axios = require('axios');
 
 library.add(faSearch);
+library.add(faThumbsDown);
+library.add(faThumbsUp);
+library.add(faCapsules);
+
+const Map = withScriptjs(
+  withGoogleMap(props => (
+    <GoogleMap defaultZoom={8} defaultCenter={{ lat: -34.397, lng: 150.644 }}>
+      {props.isMarkerShown && props.markers}
+    </GoogleMap>
+  )),
+);
 
 class Home extends React.Component {
   SAMPLE_PHARMACY_DATA = [
@@ -61,10 +83,11 @@ class Home extends React.Component {
     super(props);
 
     this.state = {
-      activeView: 'INSURANCE',
+      activeView: 'PHARMACY',
       zipcode: '',
       insuranceData: [],
       pharmacyData: [],
+      mapsKey: '',
     };
 
     this.switchActiveView = this.switchActiveView.bind(this);
@@ -73,18 +96,23 @@ class Home extends React.Component {
     );
   }
 
-  componentDidMount() {}
-
   getInsuranceDataForZipCode(zipcode) {
     return axios.get(`/api/v1/plans?zip_code=${zipcode}`).then(res => {
-      debugger;
       this.setState({ insuranceData: res.data });
     });
   }
 
   getPharmacyDataForZipcode(zipcode) {
-    this.setState({ pharmacyData: this.SAMPLE_PHARMACY_DATA });
-    // return axios.get(`/api/pharmacy?zipcode=${zipcode}`);
+    return this.SAMPLE_PHARMACY_DATA;
+    // return axios.get(`/api/v1/pharmacies?zip_code=${zipcode}`).then(res => {
+    //   this.setState({ pharmacyData: res.data });
+    // });
+  }
+
+  getGoogleMapsKey() {
+    return axios.get('/api/v1/map').then(res => {
+      this.setState({mapsKey: res.data})
+    });
   }
 
   getHomeButton() {
@@ -101,6 +129,14 @@ class Home extends React.Component {
         </button>
       );
     return '';
+  }
+
+  getMapMarkers() {
+    const { pharmacyData } = this.state;
+
+    return pharmacyData.map(pharmacy => {
+      return <Marker position={{ lat: pharmacy.lat, lng: pharmacy.lng }} />;
+    });
   }
 
   switchActiveView(activeView) {
@@ -193,6 +229,16 @@ class Home extends React.Component {
       <div id="pharmacy-container">
         <div id="pharmacy-header">
           <h1>Pharmacies</h1>
+          <div id="pharmacy-map">
+            <Map
+              isMarkerShown
+              googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${this.getGoogleMapsKey()}`}
+              loadingElement={<div style={{ height: `100%` }} />}
+              containerElement={<div style={{ height: `400px` }} />}
+              mapElement={<div style={{ height: `100%` }} />}
+              markers={this.getMapMarkers()}
+            />
+          </div>
           <div id="search-container">
             <button
               type="button"
@@ -207,6 +253,9 @@ class Home extends React.Component {
                 onChange={e => {
                   this.setState({ zipcode: e.target.value });
                 }}
+                onKeyPress={e =>
+                  e.key === 'Enter' && this.getPharmacyDataForZipcode(zipcode)
+                }
                 type="textbox"
                 placeholder="Zip Code"
               />
@@ -214,7 +263,6 @@ class Home extends React.Component {
           </div>
         </div>
         <div id="pharmacy-body-container">
-          <div id="pharmacy-map">MAP HERE</div>
           <div id="pharmacy-table-container">
             <table>
               <thead>
@@ -251,35 +299,48 @@ class Home extends React.Component {
   }
 
   static renderInsuranceTable(insuranceData) {
-    return insuranceData.map((datum, index) => (
-      <tr key={`data-row-${datum.id}`}>
-        <td>{index + 1}.</td>
-        <td>{datum.name}</td>
-        <td>{datum.medal}</td>
-        <td>{datum.ec}</td>
-        <td>{datum.cost}</td>
-        <td>{datum.pre}</td>
-      </tr>
-    ));
+    return insuranceData.map((datum, index) => {
+      const backgroundColor = index % 2 === 0 ? 'secondary' : 'primary';
+
+      return (
+        <tr className={backgroundColor} key={`data-row-${datum.id}`}>
+          <td>{index + 1}.</td>
+          <td>{datum.name}</td>
+          <td>{datum.medal}</td>
+          <td>{datum.ec}</td>
+          <td>{datum.cost}</td>
+          <td>{datum.pre}</td>
+        </tr>
+      );
+    });
   }
 
   renderPharmacyTable(pharmacyData) {
     const { zipcode } = this.state;
 
-    return pharmacyData.map((datum, index) => (
-      <tr key={`data-row-${datum.id}`}>
-        <td>{index + 1}.</td>
-        <td>{datum.name}</td>
-        <td>{datum.address}</td>
-        <td>{datum.city}</td>
-        <td>{datum.state}</td>
-        <td>{datum.zipcode}</td>
-        <td>{datum.recommended}</td>
-        <td>{datum.numberOfPharmacists}</td>
-        <td>{datum.otc}</td>
-        <td>{zipcodes.distance(zipcode, datum.zipcode)}</td>
-      </tr>
-    ));
+    return pharmacyData.map((datum, index) => {
+      const backgroundColor = index % 2 === 0 ? 'secondary' : 'primary';
+      return (
+        <tr className={backgroundColor} key={`data-row-${datum.id}`}>
+          <td>{index + 1}.</td>
+          <td>{datum.name}</td>
+          <td>{datum.address}</td>
+          <td>{datum.city}</td>
+          <td>{datum.state}</td>
+          <td>{datum.zipcode}</td>
+          <td>
+            {datum.recommended ? (
+              <FontAwesomeIcon icon="thumbs-up" />
+            ) : (
+              <FontAwesomeIcon icon="thumbs-down" />
+            )}
+          </td>
+          <td>{datum.numberOfPharmacists}</td>
+          <td>{datum.otc ? <FontAwesomeIcon icon="capsules" /> : ''}</td>
+          <td>{zipcodes.distance(zipcode, datum.zipcode)}</td>
+        </tr>
+      );
+    });
   }
 
   render() {

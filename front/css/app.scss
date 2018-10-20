@@ -43,7 +43,7 @@ table {
   border-collapse: collapse;
   font-family: 'Josefin Slab', serif;
   color: white;
-  width: 800px;
+  width: 899px;
   margin: 0 auto;
   border: 2px solid #7ece2c;
   font-weight: bold;
@@ -52,6 +52,26 @@ table {
 table > thead > tr > th {
   border-bottom: 2px solid #7ece2c;
   font-size: 20px;
+}
+
+table > tbody > tr > td {
+  margin: 10px 10px;
+}
+
+table tbody {
+  color: #7982ce;
+}
+
+.primary {
+  background-color: #f6faf1;
+}
+
+.secondary {
+  background-color: #f1f2fa;
+}
+
+#pharmacy-map {
+  float: right;
 }
 
 #search-container > * {
