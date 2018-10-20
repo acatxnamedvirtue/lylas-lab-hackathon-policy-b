@@ -31,8 +31,7 @@ class VericredAdapter
   end
 
   def format_plan(plan, tier)
-    if plan
-      {
+    plan && {
         id: plan['id'],
         name: "#{plan['carrier_name']}: #{plan['display_name']}",
         medal: plan['level'],
@@ -40,9 +39,6 @@ class VericredAdapter
         cost: drug_cost(plan, tier),
         pre: plan['premium'] || 'contact for rates'
       }
-    else
-      nil
-    end
   end
 
   def drug_covered(tier)
