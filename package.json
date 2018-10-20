@@ -73,5 +73,5 @@
     "webpack": "^4.21.0",
     "webpack-cli": "^3.1.2",
     "webpack-manifest-plugin": "^2.0.4"
-  },
+  }
 }
