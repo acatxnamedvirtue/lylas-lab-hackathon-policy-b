@@ -30,3 +30,5 @@ public/dist/css/*.map
 
 .idea/
 package-lock.json
+
+/config/application.yml
